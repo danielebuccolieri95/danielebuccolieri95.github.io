@@ -91,7 +91,9 @@ const GenderSelection = () => {
 
     const { error: insertError } = await supabase
       .from("gender_choices")
-      .insert([{ user_id: userId, gender, name: userName, surname: userSurname }]);
+      .insert([
+        { user_id: userId, gender, name: userName, surname: userSurname },
+      ]);
 
     if (insertError) {
       setError("Errore durante il salvataggio.");
@@ -125,7 +127,7 @@ const GenderSelection = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold mb-4">Scegli il tuo genere</h2>
+      <h2 className="text-2xl font-bold mb-4">Per te sono...</h2>
 
       <div className="flex gap-4 mb-6">
         <button
@@ -152,7 +154,11 @@ const GenderSelection = () => {
 
       {loading && <p className="text-blue-500 mt-2">Caricamento...</p>}
       {error && <p className="text-red-500 mt-2">{error}</p>}
-      {genderChoice && <p className="mb-4">Hai scelto: <strong>{genderChoice}</strong></p>}
+      {genderChoice && (
+        <p className="mb-4">
+          Hai scelto: <strong>{genderChoice}</strong>
+        </p>
+      )}
 
       {chartData.length > 0 && (
         <PieChart width={300} height={300}>
@@ -163,10 +169,15 @@ const GenderSelection = () => {
             cx="50%"
             cy="50%"
             outerRadius={100}
-            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+            label={({ name, percent }) =>
+              `${name}: ${(percent * 100).toFixed(0)}%`
+            }
           >
             {chartData.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
             ))}
           </Pie>
           <Tooltip />

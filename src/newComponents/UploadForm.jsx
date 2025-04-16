@@ -11,7 +11,9 @@ export function UploadForm({ onUpload }) {
     setLoading(true);
 
     const fileName = `${Date.now()}-${file.name}`;
-    const { error } = await supabase.storage.from("media").upload(fileName, file);
+    const { error } = await supabase.storage
+      .from("media")
+      .upload(fileName, file);
 
     setLoading(false);
     if (!error) {
@@ -29,6 +31,9 @@ export function UploadForm({ onUpload }) {
 
   return (
     <div className="w-full max-w-md mx-auto mt-6 flex flex-col items-center bg-white p-6 rounded-2xl shadow-xl border-2 border-dashed border-pink-300">
+      <h2 className="text-center text-3xl font-bold text-blue-600 mb-6">
+        Carica qui le tue foto e riguardale sotto
+      </h2>
       <label className="flex flex-col items-center w-full cursor-pointer">
         <Upload className="w-10 h-10 text-pink-500 mb-2" />
         <p className="text-sm text-gray-600 text-center">

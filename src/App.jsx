@@ -9,7 +9,7 @@ export default function App() {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('user_id');
+    const storedUserId = localStorage.getItem("user_id");
     if (storedUserId) {
       setUserId(storedUserId);
     }
@@ -29,7 +29,11 @@ export default function App() {
       <div className="bg-white w-[90%] max-w-4xl p-6 rounded-xl shadow-xl">
         {userId ? (
           <>
-            <h1 className="text-center text-4xl font-bold text-pink-700 mb-6">IL MIO GENDER REVEAL ❤️</h1>
+            <h1 className="text-center text-4xl font-bold mb-6">
+              IL MIO &nbsp;
+              <span className="text-pink-600">GENDER</span>&nbsp;
+              <span className="text-blue-400">REVEAL</span> ❤️
+            </h1>{" "}
             <GenderSelection />
             <UploadForm onUpload={handleUpload} />
             <Gallery key={refresh} />
