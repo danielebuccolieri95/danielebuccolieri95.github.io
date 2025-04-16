@@ -202,8 +202,8 @@ const GenderSelection = () => {
                   key={index}
                   className="border-t border-gray-200 hover:bg-gray-50"
                 >
-                  <td className="py-2 px-4">{user.name}</td>
-                  <td className="py-2 px-4">{user.surname}</td>
+                  <td className="py-2 px-4">{user.name.toUpperCase()}</td>
+                  <td className="py-2 px-4">{user.surname.toUpperCase()}</td>
                   <td className="py-2 px-4">
                     {user.gender === "maschio" ? (
                       <FaMale className="text-blue-500 inline-block" />

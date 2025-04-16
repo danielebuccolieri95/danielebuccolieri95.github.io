@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
+import { motion } from "framer-motion"; // Assicurati di avere framer-motion installato
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
 
 export function Gallery() {
   const [images, setImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null); // Stato per immagine ingrandita
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const fetchImages = async () => {
     const { data, error } = await supabase.storage.from("media").list("", {
@@ -34,15 +40,8 @@ export function Gallery() {
     fetchImages();
   }, []);
 
-  // Funzione per aprire l'immagine in modalità fullscreen
-  const openModal = (url) => {
-    setSelectedImage(url);
-  };
-
-  // Funzione per chiudere la modale
-  const closeModal = () => {
-    setSelectedImage(null);
-  };
+  const openModal = (url) => setSelectedImage(url);
+  const closeModal = () => setSelectedImage(null);
 
   if (!images.length)
     return (
@@ -52,55 +51,103 @@ export function Gallery() {
     );
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <h2 className="text-center text-3xl font-bold text-pink-600 mb-6">
-        GALLERIA CONDIVISA
-      </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {images.map((url, index) => (
-          <div
-            key={index}
-            className="w-full h-40 rounded-xl overflow-hidden shadow-lg border border-pink-200 hover:scale-105 transition"
-            onClick={() => openModal(url)} // Aggiungi click per ingrandire l'immagine
-          >
-            {url.match(/\.mp4$/i) ? (
-              <video
-                src={url}
-                className="w-full h-full object-cover"
-                controls
-              />
-            ) : (
-              <img
-                src={url}
-                alt={`img-${index}`}
-                className="w-full h-full object-cover"
-              />
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Modal per l'immagine ingrandita */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50"
-          onClick={closeModal}
-        >
-          <div className="relative">
-            <span
-              className="absolute top-0 right-0 text-white text-3xl cursor-pointer p-2"
-              onClick={closeModal}
+    <div>
+      <div className="max-w-6xl mx-auto p-4">
+        <h3 className="text-center text-4xl font-bold text-pink-500 mb-8 tracking-widest">
+          🎉GALLERIA CONDIVISA🎉
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          {images.map((url, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              className="relative rounded-2xl overflow-hidden shadow-xl bg-white border-2 border-pink-200 hover:scale-105 hover:shadow-pink-300 transition duration-300 cursor-pointer"
+              onClick={() => openModal(url)}
             >
-              ×
-            </span>
-            <img
-              src={selectedImage}
-              alt="Ingrandito"
-              className="max-w-full max-h-[98vh] object-contain"
-            />
-          </div>
+              {url.match(/\.mp4$/i) ? (
+                <div className="relative w-full h-40 overflow-hidden">
+                  <video
+                    src={url}
+                    className="w-full h-full object-cover"
+                    muted
+                  />
+                  <div className="absolute inset-0 flex justify-center items-center">
+                    <span className="text-white text-4xl">▶</span>
+                  </div>
+                </div>
+              ) : (
+                <img
+                  src={url}
+                  alt={`img-${index}`}
+                  className="w-full h-40 object-cover rounded-2xl"
+                />
+              )}
+            </motion.div>
+          ))}
         </div>
-      )}
+
+        {/* Modal */}
+        {selectedImage && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex justify-center items-center z-50"
+            onClick={closeModal}
+          >
+            <div className="relative p-4">
+              <button
+                className="absolute top-2 right-2 text-white text-3xl font-bold"
+                onClick={closeModal}
+              >
+                ×
+              </button>
+              {selectedImage.match(/\.mp4$/i) ? (
+                <video
+                  src={selectedImage}
+                  controls
+                  className="max-w-[90vw] max-h-[85vh] rounded-xl"
+                />
+              ) : (
+                <img
+                  src={selectedImage}
+                  alt="Ingrandito"
+                  className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl"
+                />
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="max-w-4xl mx-auto p-4">
+        <Swiper
+          modules={[Navigation, Pagination]}
+          navigation
+          pagination={{ clickable: true }}
+          spaceBetween={30}
+          slidesPerView={1}
+          className="rounded-xl shadow-xl"
+        >
+          {images.map((url, index) => (
+            <SwiperSlide key={index}>
+              <div className="w-full h-[400px] flex items-center justify-center bg-white rounded-xl overflow-hidden">
+                {url.match(/\.mp4$/i) ? (
+                  <video
+                    src={url}
+                    className="w-full h-full object-contain"
+                    controls
+                  />
+                ) : (
+                  <img
+                    src={url}
+                    alt={`img-${index}`}
+                    className="w-full h-full object-contain"
+                  />
+                )}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </div>
   );
 }
