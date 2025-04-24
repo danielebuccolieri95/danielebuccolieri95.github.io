@@ -52,6 +52,36 @@ export function Gallery() {
 
   return (
     <div>
+      <div className="max-w-4xl mx-auto p-4">
+        <Swiper
+          modules={[Navigation, Pagination]}
+          navigation
+          pagination={{ clickable: true }}
+          spaceBetween={30}
+          slidesPerView={1}
+          className="rounded-xl shadow-xl"
+        >
+          {images.map((url, index) => (
+            <SwiperSlide key={index}>
+              <div className="w-full h-[400px] flex items-center justify-center bg-white rounded-xl overflow-hidden">
+                {url.match(/\.mp4$/i) ? (
+                  <video
+                    src={url}
+                    className="w-full h-full object-contain"
+                    controls
+                  />
+                ) : (
+                  <img
+                    src={url}
+                    alt={`img-${index}`}
+                    className="w-full h-full object-contain"
+                  />
+                )}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
       <div className="max-w-6xl mx-auto p-4">
         <h3 className="text-center text-4xl font-bold text-pink-500 mb-8 tracking-widest">
           🎉GALLERIA CONDIVISA🎉
@@ -117,36 +147,6 @@ export function Gallery() {
             </div>
           </div>
         )}
-      </div>
-      <div className="max-w-4xl mx-auto p-4">
-        <Swiper
-          modules={[Navigation, Pagination]}
-          navigation
-          pagination={{ clickable: true }}
-          spaceBetween={30}
-          slidesPerView={1}
-          className="rounded-xl shadow-xl"
-        >
-          {images.map((url, index) => (
-            <SwiperSlide key={index}>
-              <div className="w-full h-[400px] flex items-center justify-center bg-white rounded-xl overflow-hidden">
-                {url.match(/\.mp4$/i) ? (
-                  <video
-                    src={url}
-                    className="w-full h-full object-contain"
-                    controls
-                  />
-                ) : (
-                  <img
-                    src={url}
-                    alt={`img-${index}`}
-                    className="w-full h-full object-contain"
-                  />
-                )}
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
       </div>
     </div>
   );

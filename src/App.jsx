@@ -29,7 +29,7 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen py-10 flex justify-center items-center font-hand"
+      className="min-h-screen py-10 flex justify-center items-center font-dancing"
       style={{
         background: "linear-gradient(135deg, #fddde6, #dceaff)",
       }}

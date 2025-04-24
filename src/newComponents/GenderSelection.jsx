@@ -161,7 +161,7 @@ const GenderSelection = () => {
       )}
 
       {chartData.length > 0 && (
-        <PieChart width={300} height={300}>
+        <PieChart width={400} height={300}>
           <Pie
             data={chartData}
             dataKey="value"

@@ -4,7 +4,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        hand: ['"Patrick Hand"', "cursive"],
+        poppins: ["Poppins", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        quicksand: ["Quicksand", "sans-serif"],
+        dancing: ["Dancing Script", "cursive"],
       },
     },
   },
